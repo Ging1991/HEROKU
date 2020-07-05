@@ -34,6 +34,10 @@ def manejarRecepcion(servidor, cliente):
     # Recibo un mensaje con su nombre y el de su oponente
     respuesta = cliente.recv(1024).decode()
     print("Debug:--"+str(respuesta)+"--")
+    if str(respuesta) == "":
+        print("Ha recibido una respuesta incorrecta")
+        return
+
     respuesta_json = json.loads(respuesta)
     if respuesta_json["tipo"] != "cliente":
         print("Tipo de mensaje no reconocido: " + respuesta_json["tipo"])
