@@ -78,6 +78,7 @@ def iniciarConexion():
     if ON_HEROKU:
         PUERTO = int(os.environ.get('PORT', 5000))
     DIRECCION = '0.0.0.0'
+    DIRECCION = "python-server-carlos.herokuapp.com"
     conexion = socket.socket()
     conexion.bind((DIRECCION, PUERTO))
     conexion.listen(10)
