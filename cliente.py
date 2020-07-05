@@ -26,7 +26,9 @@ def leerCliente(conexion):
 def crearConexion():
     print("Iniciando conexion...")
     DIRECCION = "python-server-carlos.herokuapp.com"
+    DIRECCION = "localhost"
     PUERTO = 80
+    PUERTO = 5000
     mi_socket = socket.socket()
     mi_socket.connect((DIRECCION, PUERTO))
     leerServidor(mi_socket)

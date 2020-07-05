@@ -80,8 +80,12 @@ def iniciarConexion():
     DIRECCION = '0.0.0.0'
     conexion = socket.socket()
     conexion.bind((DIRECCION, PUERTO))
-    conexion.listen(5)
-    print("Conexion finaizada...")
+    conexion.listen(10)
+
+    hostname = socket.gethostname()
+    ## getting the IP address using socket.gethostbyname() method
+    ip_address = socket.gethostbyname(hostname)
+    print("Conexion finalizada..." + str(ip_address))
     return conexion
     
 
@@ -91,4 +95,5 @@ while True:
     cliente, direccion = servidor.accept()
     cantidad+=1
     print("Nueva conexion establecida: {0}".format(cantidad))
+    print("Direccion: "+ str(direccion))
     manejarRecepcion(servidor, cliente)
