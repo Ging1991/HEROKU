@@ -4,6 +4,11 @@ import json
 # Leer respuesta del servidor
 def leerServidor(conexion):
     print("Esperando respuesta del server...")
+    respuesta = conexion.recv(1024)
+    if str(respuesta) == "":
+        print("Ha recibido una respuesta vacia")
+        return
+        
     respuesta = conexion.recv(1024).decode()
     print("Debug: " + respuesta)
     respuesta_json = json.loads(respuesta)

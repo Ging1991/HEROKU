@@ -5,7 +5,7 @@ import os
 
 enEspera = dict()
 enEspera["junio"] = -1
-enEspera["DICIEMBRE"] = -1
+enEspera["julio"] = -1
 
 # Hilo para comunicar a los jugadores entre salas
 def comunicar(servidor, cliente1, cliente2):
@@ -36,11 +36,13 @@ def manejarRecepcion(servidor, cliente):
     print("Debug:--"+str(respuesta)+"--")
     if str(respuesta) == "":
         print("Ha recibido una respuesta incorrecta")
+        cliente.close()
         return
 
     respuesta_json = json.loads(respuesta)
     if respuesta_json["tipo"] != "cliente":
         print("Tipo de mensaje no reconocido: " + respuesta_json["tipo"])
+        cliente.close()
         return
     usuario = respuesta_json["usuario"]
     oponente = respuesta_json["oponente"]
@@ -78,7 +80,7 @@ def iniciarConexion():
     if ON_HEROKU:
         PUERTO = int(os.environ.get('PORT', 5000))
     DIRECCION = '0.0.0.0'
-    DIRECCION = '127.0.0.1'
+    #DIRECCION = '127.0.0.1'
     conexion = socket.socket()
     conexion.bind((DIRECCION, PUERTO))
     conexion.listen(10)
