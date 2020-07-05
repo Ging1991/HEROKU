@@ -3,19 +3,6 @@ import socket
 import json
 import os
 
-
-ON_HEROKU = os.environ.get('ON_HEROKU')
-
-
-if ON_HEROKU:
-    # get the heroku port
-    port = int(os.environ.get('PORT', 17995))  # as per OP comments default is 17995
-else:
-    port = 5000
-
-port = int(os.environ.get("PORT", 5000))
-HOST='0.0.0.0'
-
 enEspera = dict()
 enEspera["junio"] = -1
 enEspera["DICIEMBRE"] = -1
@@ -79,12 +66,21 @@ def manejarRecepcion(servidor, cliente):
     cliente.send(prep.encode())
     cliente.close()
 
+def iniciarConexion():
+    print("Iniciando conexion...")
+    PUERTO = 5000
+    ON_HEROKU = os.environ.get('ON_HEROKU')
+    if ON_HEROKU:
+        PUERTO = int(os.environ.get('PORT', 5000))
+    DIRECCION = '0.0.0.0'
+    conexion = socket.socket()
+    conexion.bind((DIRECCION, PUERTO))
+    conexion.listen(5)
+    print("Conexion finaizada...")
+    return conexion
+    
 
-
-# Inicio el servidor
-servidor = socket.socket()
-servidor.bind((HOST, port))
-servidor.listen(5)
+servidor = iniciarConexion()
 cantidad = 0
 while True:
     cliente, direccion = servidor.accept()
