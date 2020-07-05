@@ -1,6 +1,20 @@
 import threading
 import socket
 import json
+import os
+
+
+ON_HEROKU = os.environ.get('ON_HEROKU')
+
+
+if ON_HEROKU:
+    # get the heroku port
+    port = int(os.environ.get('PORT', 17995))  # as per OP comments default is 17995
+else:
+    port = 5000
+
+port = int(os.environ.get("PORT", 5000))
+HOST='0.0.0.0'
 
 enEspera = dict()
 enEspera["junio"] = -1
@@ -69,7 +83,7 @@ def manejarRecepcion(servidor, cliente):
 
 # Inicio el servidor
 servidor = socket.socket()
-servidor.bind(("localhost", 5000))
+servidor.bind((HOST, port))
 servidor.listen(5)
 cantidad = 0
 while True:

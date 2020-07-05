@@ -1,6 +1,12 @@
 import socket
 import json
 
+#mi_socket = socket.socket()
+DIRECCION = "https://python-server-carlos.herokuapp.com/"
+PUERTO = 17995
+print(socket.getaddrinfo(DIRECCION, PUERTO))
+
+
 # Leer respuesta del servidor
 def leerServidor(conexion):
     respuesta = conexion.recv(1024).decode()
@@ -24,7 +30,9 @@ def leerCliente(conexion):
 # Creo la conexion y devuelvo el socket
 def crearConexion():
     DIRECCION = "localhost"
+    DIRECCION = "https://python-server-carlos.herokuapp.com/"
     PUERTO = 5000
+    PUERTO = 17995
     mi_socket = socket.socket()
     mi_socket.connect((DIRECCION, PUERTO))
     print("Intentando conectar...")
