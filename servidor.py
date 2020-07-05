@@ -4,7 +4,7 @@ import json
 
 enEspera = dict()
 enEspera["junio"] = -1
-enEspera["julio"] = -1
+enEspera["DICIEMBRE"] = -1
 
 # Hilo para comunicar a los jugadores entre salas
 def comunicar(servidor, cliente1, cliente2):
