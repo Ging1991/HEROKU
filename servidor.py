@@ -31,7 +31,7 @@ def manejarRecepcion(servidor, cliente):
     mensaje["contenido"] = "Conexion establecida, bienvenido"
     prep = str(mensaje).replace("'", '"')
     cliente.send(prep.encode())
-    print("Enviando mes a cliente, esperando su respuesta")
+    print("Enviando mensaje a cliente, esperando su respuesta")
     
     # Recibo un mensaje con su nombre y el de su oponente
     respuesta = cliente.recv(1024).decode()
@@ -82,8 +82,9 @@ def iniciarConexion():
     if ON_HEROKU:
         PUERTO = int(os.environ.get('PORT', 5000))
     print("Puerto encontrado..."+str(PUERTO))
-    DIRECCION = '0.0.0.0'
+    #DIRECCION = '0.0.0.0'
     #DIRECCION = '127.0.0.1'
+    DIRECCION = socket.gethostname()
     conexion = socket.socket()
     conexion.bind((DIRECCION, PUERTO))
     conexion.listen(10)

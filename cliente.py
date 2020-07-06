@@ -5,10 +5,19 @@ import json
 def leerServidor(conexion):
     print("Esperando respuesta del server...")
     respuesta = conexion.recv(1024)
-    respuesta = conexion.recv(1024)
-    if str(respuesta) == "":
+    for i in respuesta:
+        print(str(i))
+
+
+
+    if str(respuesta.decode()) == "":
         print("Ha recibido una respuesta vacia")
-        return
+    respuesta = conexion.recv(1024)
+    if str(respuesta.decode()) == "":
+        print("Ha recibido una respuesta vacia")
+    respuesta = conexion.recv(1024)
+    if str(respuesta.decode()) == "":
+        print("Ha recibido una respuesta vacia")
         
     print("Debug: --" + str(respuesta) +"--")
     print("Debug: --" + respuesta.decode() +"--")
@@ -38,6 +47,23 @@ def crearConexion():
     #PUERTO = 5000
     mi_socket = socket.socket()
     mi_socket.connect((DIRECCION, PUERTO))
+
+    #envio basura a ver si la lee
+    mensaje = dict()
+    mensaje["contenido"] = "Basura 1"
+    prep = str(mensaje).replace("'", '"')
+    mi_socket.send(prep.encode())
+    mensaje["contenido"] = "Basura 2"
+    prep = str(mensaje).replace("'", '"')
+    mi_socket.send(prep.encode())
+    mensaje["contenido"] = "Basura 3"
+    prep = str(mensaje).replace("'", '"')
+    mi_socket.send(prep.encode())
+
+
+
+
+
     leerServidor(mi_socket)
     return mi_socket
     
