@@ -75,6 +75,19 @@ def manejarRecepcion(servidor, cliente):
     cliente.send(prep.encode())
     cliente.close()
 
+def eco(servidor, cliente):
+    print("Manejando eco")
+    
+    # Envio un mensaje de que se ha establecido la conexion
+    mensaje = dict()
+    mensaje["tipo"] = "servidor"
+    mensaje["contenido"] = "Conexion establecida, bienvenido"
+    prep = str(mensaje).replace("'", '"')
+    cliente.send(prep.encode())
+    print("Enviando mensaje a cliente, finalizando conexion")
+    cliente.shutdown(1)
+    cliente.close()
+    
 def iniciarConexion():
     print("Iniciando conexion...")
     PUERTO = 5000
@@ -83,11 +96,12 @@ def iniciarConexion():
         PUERTO = int(os.environ.get('PORT', 5000))
     print("Puerto encontrado..."+str(PUERTO))
     #DIRECCION = '0.0.0.0'
-    #DIRECCION = '127.0.0.1'
+    DIRECCION = '127.0.0.1'
     DIRECCION = socket.gethostname()
     conexion = socket.socket()
     conexion.bind((DIRECCION, PUERTO))
-    conexion.listen(10)
+    conexion.listen(20)
+    
 
     hostname = socket.gethostname()
     ip_address = socket.gethostbyname(hostname)
@@ -102,4 +116,5 @@ while True:
     cantidad+=1
     print("Nueva conexion establecida: {0}".format(cantidad))
     print("Direccion: "+ str(direccion))
-    manejarRecepcion(servidor, cliente)
+    eco(servidor, cliente)
+    #manejarRecepcion(servidor, cliente)

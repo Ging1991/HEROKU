@@ -5,28 +5,18 @@ import json
 def leerServidor(conexion):
     print("Esperando respuesta del server...")
     respuesta = conexion.recv(1024)
-    for i in respuesta:
-        print(str(i))
-
-
-
-    if str(respuesta.decode()) == "":
-        print("Ha recibido una respuesta vacia")
-    respuesta = conexion.recv(1024)
-    if str(respuesta.decode()) == "":
-        print("Ha recibido una respuesta vacia")
-    respuesta = conexion.recv(1024)
+    
     if str(respuesta.decode()) == "":
         print("Ha recibido una respuesta vacia")
         
     print("Debug: --" + str(respuesta) +"--")
     print("Debug: --" + respuesta.decode() +"--")
-    respuesta = conexion.recv(1024).decode()
-    respuesta_json = json.loads(respuesta)
+    respuesta_json = json.loads(respuesta.decode())
     if respuesta_json["tipo"] != "servidor":
         print("Tipo de respuesta incorrecto: " + respuesta_json["tipo"])
         return
     print(respuesta_json["contenido"])
+    conexion.close()
 
 # Leer respuesta del cliente
 def leerCliente(conexion):
@@ -42,28 +32,11 @@ def leerCliente(conexion):
 def crearConexion():
     print("Iniciando conexion...")
     DIRECCION = "python-server-carlos.herokuapp.com"
-    #DIRECCION = "localhost"
+    DIRECCION = "localhost"
     PUERTO = 80
-    #PUERTO = 5000
-    mi_socket = socket.socket()
+    PUERTO = 5000
+    mi_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     mi_socket.connect((DIRECCION, PUERTO))
-
-    #envio basura a ver si la lee
-    mensaje = dict()
-    mensaje["contenido"] = "Basura 1"
-    prep = str(mensaje).replace("'", '"')
-    mi_socket.send(prep.encode())
-    mensaje["contenido"] = "Basura 2"
-    prep = str(mensaje).replace("'", '"')
-    mi_socket.send(prep.encode())
-    mensaje["contenido"] = "Basura 3"
-    prep = str(mensaje).replace("'", '"')
-    mi_socket.send(prep.encode())
-
-
-
-
-
     leerServidor(mi_socket)
     return mi_socket
     
@@ -81,6 +54,6 @@ def cartas(conexion):
     leerCliente(conexion)
 
 mi_socket = crearConexion()
-presentacion(mi_socket)
-cartas(mi_socket)
-mi_socket.close()
+#presentacion(mi_socket)
+#cartas(mi_socket)
+#mi_socket.close()
