@@ -98,7 +98,7 @@ def iniciarConexion():
     #DIRECCION = '0.0.0.0'
     DIRECCION = '127.0.0.1'
     DIRECCION = socket.gethostname()
-    conexion = socket.socket()
+    conexion = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     conexion.bind((DIRECCION, PUERTO))
     conexion.listen(20)
     
