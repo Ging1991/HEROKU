@@ -85,8 +85,9 @@ def eco(servidor, cliente):
     prep = str(mensaje).replace("'", '"')
     cliente.send(prep.encode())
     print("Enviando mensaje a cliente, finalizando conexion")
-    cliente.shutdown(1)
+    #cliente.shutdown(1)
     cliente.close()
+    print("Enviando mensaje a cliente, finalizando conexion2")
     
 def iniciarConexion():
     print("Iniciando conexion...")
