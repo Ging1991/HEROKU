@@ -5,12 +5,14 @@ import json
 def leerServidor(conexion):
     print("Esperando respuesta del server...")
     respuesta = conexion.recv(1024)
+    respuesta = conexion.recv(1024)
     if str(respuesta) == "":
         print("Ha recibido una respuesta vacia")
         return
         
+    print("Debug: --" + str(respuesta) +"--")
+    print("Debug: --" + respuesta.decode() +"--")
     respuesta = conexion.recv(1024).decode()
-    print("Debug: " + respuesta)
     respuesta_json = json.loads(respuesta)
     if respuesta_json["tipo"] != "servidor":
         print("Tipo de respuesta incorrecto: " + respuesta_json["tipo"])
