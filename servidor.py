@@ -95,7 +95,7 @@ def iniciarConexion():
     ON_HEROKU = os.environ.get('ON_HEROKU')
     if ON_HEROKU:
         PUERTO = int(os.environ.get('PORT', 5000))
-    print("Puerto encontrado..."+str(PUERTO))
+    print("Puerto encontrado.s.."+str(PUERTO))
     DIRECCION = '0.0.0.0'
     #DIRECCION = '127.0.0.1'
     #DIRECCION = socket.gethostname()

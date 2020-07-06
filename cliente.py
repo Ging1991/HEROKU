@@ -33,7 +33,7 @@ def crearConexion():
     print("Iniciando conexion...")
     DIRECCION = "python-server-carlos.herokuapp.com"
     #DIRECCION = "localhost"
-    PUERTO = 15428
+    PUERTO = 443
     #PUERTO = 5000
     mi_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     mi_socket.connect((DIRECCION, PUERTO))
