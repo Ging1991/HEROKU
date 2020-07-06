@@ -97,7 +97,7 @@ def iniciarConexion():
         PUERTO = int(os.environ.get('PORT', 5000))
     print("Puerto encontrado.s.."+str(PUERTO))
     DIRECCION = '0.0.0.0'
-    #DIRECCION = '127.0.0.1'
+    #DIRECCION = '127.0.0.1'  
     #DIRECCION = socket.gethostname()
     conexion = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     conexion.bind((DIRECCION, PUERTO))

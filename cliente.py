@@ -31,7 +31,7 @@ def leerCliente(conexion):
 # Creo la conexion y devuelvo el socket
 def crearConexion():
     print("Iniciando conexion...")
-    DIRECCION = "python-server-carlos.herokuapp.com"
+    DIRECCION = "pythonservercarlos.herokuapp.com"
     #DIRECCION = "localhost"
     PUERTO = 443
     #PUERTO = 5000
