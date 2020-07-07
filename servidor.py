@@ -111,5 +111,5 @@ while True:
     cantidad+=1
     print("Nueva conexion establecida: {0}".format(cantidad))
     print("Direccion: "+ str(direccion))
-    eco(servidor, cliente)
+    eco(cliente)
     #manejarRecepcion(servidor, cliente)
