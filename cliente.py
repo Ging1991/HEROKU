@@ -1,26 +1,23 @@
 import socket
 import json
 
-# Leer respuesta del servidor
-def comunicar(conexion):
-    print("Esperando respuesta del server...")
-    respuesta = conexion.recv(1024)
-    print(str(respuesta))
-    conexion.close()
-    print("Finalizando conexion.")
-    
-
-def crearConexion():
-    print("Creando conexion...")
+# Seteo constantes
+local = True
+DIRECCION = "localhost"
+PUERTO = 5000
+if not local:
     DIRECCION = "pythonservercarlos.herokuapp.com"
-    DIRECCION = "localhost"
-    PUERTO = 443
-    PUERTO = 5000
-    mi_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    mi_socket.connect((DIRECCION, PUERTO))
-    print("Conexion establecida.")
-    return mi_socket
+    PUERTO = 80
 
+# Creo la conexion
+print("Creando conexion...")
+mi_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+mi_socket.connect((DIRECCION, PUERTO))
+print("Conexion establecida.")
 
-mi_socket = crearConexion()
-comunicar(mi_socket)
+# Leer respuesta del servidor y finalizar
+print("Esperando respuesta del servidor...")
+respuesta = mi_socket.recv(1024)
+print("-"+str(respuesta)+"-")
+mi_socket.close()
+print("Conexion finalizada.")

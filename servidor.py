@@ -1,35 +1,32 @@
 import socket
 import os
 
-def manejar(conexion, clienteN):
-    print("Manejando conexion a cliente {0}".format(clienteN))
-    mensaje = "Conexion establecida, bienvenido"
-    conexion.send(mensaje.encode())
-    conexion.close()
-    print("Mensaje enviado a cliente {0}, finalizando conexion".format(clienteN))
-    
-def iniciarConexion():
-    print("Iniciando conexion...")
-    PUERTO = 5000
-    ON_HEROKU = os.environ.get('ON_HEROKU')
-    if ON_HEROKU:
-        PUERTO = int(os.environ.get('PORT', 5000))
-    print("Puerto encontrado -> "+str(PUERTO))
+# Seteo constantes
+ON_HEROKU = os.environ.get('ON_HEROKU')
+PUERTO = 5000
+DIRECCION = '127.0.0.1'
+if ON_HEROKU:
+    PUERTO = int(os.environ.get('PORT', 5000))
     DIRECCION = '0.0.0.0'
-    #DIRECCION = '127.0.0.1'
     #DIRECCION = socket.gethostname()
-    conexion = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    conexion.bind((DIRECCION, PUERTO))
-    conexion.listen(5)
-    print("Conexion finalizada -> " + str(socket.gethostbyname(DIRECCION)))
-    return conexion
-    
 
-servidor = iniciarConexion()
-clientes = 0
+# Creo el socket servidor
+print("Iniciando servidor")
+servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+servidor.bind((DIRECCION, PUERTO))
+servidor.listen(5)
+print("Servidor en linea -> " + str(socket.gethostbyname(DIRECCION)))
+    
+# Ciclo principal del servidor
+cantidad = 0
 while True:
     cliente, direccion = servidor.accept()
-    clientes += 1
-    print("Nueva conexion: Clientes -> {0}".format(clientes))
+    cantidad += 1
+    print("Nueva conexion: Clientes -> {0}".format(cantidad))
     print("Direccion: "+ str(direccion))
-    manejar(cliente, clientes)
+    
+    # Manejando conexion de cliente
+    mensaje = "Conexion establecida, bienvenido"
+    cliente.sendall(mensaje.encode())
+    cliente.close()
+    print("Mensaje enviado a cliente {0}, finalizando conexion".format(cantidad))

@@ -1,7 +1,18 @@
 import socket
-import json
+sock = socket.socket()
+sock.connect(('en.wikipedia.org', 80))
 
-DIRECCION = "python-server-carlos.herokuapp.com"
-PUERTO = 80
-print(socket.getaddrinfo(DIRECCION, PUERTO))
+for line in (
+    "GET /wiki/List_of_HTTP_header_fields HTTP/1.1",
+    "Host: en.wikipedia.org",
+    "Connection: close",
+):
+    sock.send(str(line + "\r\n").encode())
+sock.send("\r\n".encode())
 
+while True:
+    content = sock.recv(1024)
+    if content:
+        print (content)
+    else:
+        break
