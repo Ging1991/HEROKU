@@ -1,99 +1,12 @@
-import threading
 import socket
-import json
 import os
 
-enEspera = dict()
-enEspera["junio"] = -1
-enEspera["julio"] = -1
-
-# Hilo para comunicar a los jugadores entre salas
-def comunicar(servidor, cliente1, cliente2):
-    while True:
-        # Le envio a cliente2 el mensaje de cliente1
-        respuesta = cliente1.recv(1024)
-        cliente2.send(respuesta)
-
-        # Le envio a cliente1 el mensaje de cliente2
-        respuesta = cliente2.recv(1024)
-        cliente1.send(respuesta)
-
-def crearSala(servidor, cliente1, cliente2):
-    hilo = threading.Thread(target=comunicar, args=(servidor, cliente1, cliente2))
-    hilo.start()
-
-def manejarRecepcion(servidor, cliente):
-    print("manejando nueva entrada")
-    
-    # Envio un mensaje de que se ha establecido la conexion
-    mensaje = dict()
-    mensaje["tipo"] = "servidor"
-    mensaje["contenido"] = "Conexion establecida, bienvenido"
-    prep = str(mensaje).replace("'", '"')
-    cliente.send(prep.encode())
-    print("Enviando mensaje a cliente, esperando su respuesta")
-    
-    # Recibo un mensaje con su nombre y el de su oponente
-    respuesta = cliente.recv(1024).decode()
-    print("Debug:--"+str(respuesta)+"--")
-    if str(respuesta) == "":
-        print("Ha recibido una respuesta incorrecta")
-        cliente.close()
-        return
-
-    respuesta_json = json.loads(respuesta)
-    if respuesta_json["tipo"] != "cliente":
-        print("Tipo de mensaje no reconocido: " + respuesta_json["tipo"])
-        cliente.close()
-        return
-    usuario = respuesta_json["usuario"]
-    oponente = respuesta_json["oponente"]
-
-    # Es el host asi que lo agrego a la lista de espera
-    if (oponente == ""):
-        print("Host agregado a la lista de espera..." + usuario)
-        enEspera[usuario] = cliente
-        mensaje["contenido"] = "Ha entrado en la sala de espera..."
-        prep = str(mensaje).replace("'", '"')
-        cliente.send(prep.encode())
-        return
-
-
-    # Si no lo es lo agrego a la sala
-    if oponente in enEspera.keys():
-        print("Agregando a la sala de duelo..." + usuario)
-        mensaje["contenido"] = "Hemos encontrado a su rival, en breve empezara el duelo"
-        prep = str(mensaje).replace("'", '"')
-        cliente.send(prep.encode())
-
-        crearSala(servidor, enEspera[oponente], cliente)
-        del enEspera[oponente]
-        return
-
-    mensaje["contenido"] = "No se encontro su oponente: " + oponente
-    prep = str(mensaje).replace("'", '"')
-    cliente.send(prep.encode())
-    cliente.close()
-
-def eco(cliente):
-    print("Manejando eco")
+def manejar(conexion, clienteN):
+    print("Manejando conexion a cliente {0}".format(clienteN))
     mensaje = "Conexion establecida, bienvenido"
-    cliente.send(mensaje.encode())
-
-    print("esperando varias respuestas del cliente")
-    respuest = cliente.recv(1024)
-    print(str(respuest))
-    respuest = cliente.recv(1024)
-    print(str(respuest))
-    respuest = cliente.recv(1024)
-    print(str(respuest))
-    respuest = cliente.recv(1024)
-    print(str(respuest))
-    respuest = cliente.recv(1024)
-    print(str(respuest))
-
-    cliente.close()
-    print("Enviando mensaje a cliente, finalizando conexion")
+    conexion.send(mensaje.encode())
+    conexion.close()
+    print("Mensaje enviado a cliente {0}, finalizando conexion".format(clienteN))
     
 def iniciarConexion():
     print("Iniciando conexion...")
@@ -101,28 +14,22 @@ def iniciarConexion():
     ON_HEROKU = os.environ.get('ON_HEROKU')
     if ON_HEROKU:
         PUERTO = int(os.environ.get('PORT', 5000))
-    print("Puerto encontrado.s.."+str(PUERTO))
-    #DIRECCION = "pythonservercarlos.herokuapp.com"
+    print("Puerto encontrado -> "+str(PUERTO))
     DIRECCION = '0.0.0.0'
-    #DIRECCION = '127.0.0.1'  
-    DIRECCION = socket.gethostname()
+    #DIRECCION = '127.0.0.1'
+    #DIRECCION = socket.gethostname()
     conexion = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     conexion.bind((DIRECCION, PUERTO))
     conexion.listen(5)
-    
-
-    hostname = socket.gethostname()
-    ip_address = socket.gethostbyname(hostname)
-    print("Conexion finalizada..." + str(ip_address))
+    print("Conexion finalizada -> " + str(socket.gethostbyname(DIRECCION)))
     return conexion
     
 
 servidor = iniciarConexion()
-cantidad = 0
+clientes = 0
 while True:
     cliente, direccion = servidor.accept()
-    cantidad+=1
-    print("Nueva conexion establecida: {0}".format(cantidad))
+    clientes += 1
+    print("Nueva conexion: Clientes -> {0}".format(clientes))
     print("Direccion: "+ str(direccion))
-    eco(cliente)
-    #manejarRecepcion(servidor, cliente)
+    manejar(cliente, clientes)
