@@ -80,7 +80,15 @@ def eco(cliente):
     mensaje = "Conexion establecida, bienvenido"
     cliente.send(mensaje.encode())
 
-    print("esperando una respuesta del cliente")
+    print("esperando varias respuestas del cliente")
+    respuest = cliente.recv(1024)
+    print(str(respuest))
+    respuest = cliente.recv(1024)
+    print(str(respuest))
+    respuest = cliente.recv(1024)
+    print(str(respuest))
+    respuest = cliente.recv(1024)
+    print(str(respuest))
     respuest = cliente.recv(1024)
     print(str(respuest))
 
