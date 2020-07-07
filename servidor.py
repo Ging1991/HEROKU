@@ -1,7 +1,7 @@
 import socket
 import os
 
-# Seteo constantes
+# Seteo constantes 
 ON_HEROKU = os.environ.get('ON_HEROKU')
 PUERTO = 5000
 DIRECCION = '127.0.0.1'
