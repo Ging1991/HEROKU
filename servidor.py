@@ -75,19 +75,12 @@ def manejarRecepcion(servidor, cliente):
     cliente.send(prep.encode())
     cliente.close()
 
-def eco(servidor, cliente):
+def eco(cliente):
     print("Manejando eco")
-    
-    # Envio un mensaje de que se ha establecido la conexion
-    mensaje = dict()
-    mensaje["tipo"] = "servidor"
-    mensaje["contenido"] = "Conexion establecida, bienvenido"
-    prep = str(mensaje).replace("'", '"')
-    cliente.send(prep.encode())
-    print("Enviando mensaje a cliente, finalizando conexion")
-    #cliente.shutdown(1)
+    mensaje = "Conexion establecida, bienvenido"
+    cliente.send(mensaje.encode())
     cliente.close()
-    print("Enviando mensaje a cliente, finalizando conexion2")
+    print("Enviando mensaje a cliente, finalizando conexion")
     
 def iniciarConexion():
     print("Iniciando conexion...")
@@ -102,7 +95,7 @@ def iniciarConexion():
     DIRECCION = socket.gethostname()
     conexion = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     conexion.bind((DIRECCION, PUERTO))
-    conexion.listen(20)
+    conexion.listen(5)
     
 
     hostname = socket.gethostname()
