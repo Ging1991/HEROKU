@@ -8,6 +8,8 @@ def leerServidor(conexion):
     
     if str(respuesta.decode()) == "":
         print("Ha recibido una respuesta vacia")
+        conexion.close()
+        return
         
     print("Debug: --" + str(respuesta) +"--")
     print("Debug: --" + respuesta.decode() +"--")
