@@ -2,11 +2,11 @@ import socket
 import json
 
 # Seteo constantes
-local = False
+local = True
 DIRECCION = "localhost"
 PUERTO = 5000
 if not local:
-    DIRECCION = "pythonservercarlos.herokuapp.com"
+    DIRECCION = "ws://pythonservercarlos.herokuapp.com"
     PUERTO = 80
 
 # Creo la conexion
