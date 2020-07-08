@@ -2,7 +2,7 @@ import socket
 import json
 
 # Seteo constantes
-local = True
+local = False
 DIRECCION = "localhost"
 PUERTO = 5000
 if not local:
