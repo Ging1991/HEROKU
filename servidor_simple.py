@@ -29,5 +29,6 @@ while True:
     mensaje = "Conexion establecida, bienvenido"
     cliente.sendall(mensaje.encode())
     respuesta = cliente.recv(1024)
+    print (respuesta.decode())
     cliente.close()
     print("Mensaje enviado a cliente {0}, finalizando conexion".format(cantidad))

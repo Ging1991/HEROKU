@@ -1,23 +1,19 @@
-import socket
-import json
+#!/usr/bin/env python
 
-# Seteo constantes
-local = True
-DIRECCION = "localhost"
-PUERTO = 5000
-if not local:
-    DIRECCION = "ws://pythonservercarlos.herokuapp.com"
-    PUERTO = 80
+# WS client example
 
-# Creo la conexion
-print("Creando conexion...")
-mi_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-mi_socket.connect((DIRECCION, PUERTO))
-print("Conexion establecida.")
+import asyncio
+import websockets
 
-# Leer respuesta del servidor y finalizar
-print("Esperando respuesta del servidor...")
-respuesta = mi_socket.recv(1024)
-print("-"+str(respuesta)+"-")
-mi_socket.close()
-print("Conexion finalizada.")
+async def hello():
+    uri = "ws://localhost:5000"
+    async with websockets.connect(uri) as websocket:
+        name = input("What's your name? ")
+
+        await websocket.send(name)
+        print(f"> {name}")
+
+        greeting = await websocket.recv()
+        print(f"< {greeting}")
+
+asyncio.get_event_loop().run_until_complete(hello())
