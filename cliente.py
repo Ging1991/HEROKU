@@ -5,15 +5,14 @@
 import asyncio
 import websockets
 
-async def hello():
-    uri = "ws://localhost:5000"
+async def saludar():
+    uri = "ws://pythonservercarlos.herokuapp.com:80"
+    #uri = "ws://localhost:5000"
     async with websockets.connect(uri) as websocket:
-        name = input("What's your name? ")
+        nombre = input("¿Cual es tu nombre?")
+        await websocket.send(nombre)
+        print(">> {0}".format(nombre))
+        respuesta = await websocket.recv()
+        print(">> {0}".format(respuesta))
 
-        await websocket.send(name)
-        print(f"> {name}")
-
-        greeting = await websocket.recv()
-        print(f"< {greeting}")
-
-asyncio.get_event_loop().run_until_complete(hello())
+asyncio.get_event_loop().run_until_complete(saludar())
