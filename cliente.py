@@ -1,14 +1,13 @@
-#!/usr/bin/env python
-
-# WS client example
-
 import asyncio
 import websockets
 
+local = True
+DIRECCION = "ws://localhost:5000"
+if not local:
+    DIRECCION = "ws://pythonservercarlos.herokuapp.com:80"
+
 async def saludar():
-    uri = "ws://pythonservercarlos.herokuapp.com:80"
-    #uri = "ws://localhost:5000"
-    async with websockets.connect(uri) as websocket:
+    async with websockets.connect(DIRECCION) as websocket:
         nombre = input("¿Cual es tu nombre?")
         await websocket.send(nombre)
         print(">> {0}".format(nombre))
